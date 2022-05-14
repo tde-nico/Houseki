@@ -219,6 +219,17 @@
 								text: ''
 								on_release: app.settings.file_manager_open()
 						MDBoxLayout:
+							padding: '10dp'
+							orientation: "horizontal"
+							size_hint_y: .1
+							MDLabel:
+								text: "Auto Update"
+								pos_hint: {'x':0.1, 'y':0}
+							MDSwitch:
+								id: update
+								pos_hint: {'x':0.9, 'y':0}
+								on_active: app.settings.set_update()
+						MDBoxLayout:
 							orientation: "horizontal"
 							size_hint_y: .1
 							MDBoxLayout:

@@ -162,6 +162,8 @@ class	Youtube_Downloader:
 					break	
 		
 	def download(self):
+		if self.app.updating:
+			return
 		if self.file_format:
 			if self.is_downloading:
 				if self.download_dialog == None:

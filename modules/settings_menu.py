@@ -1,4 +1,5 @@
 from modules.settings import *
+from pytube import __version__
 
 class	Settings:
 	def __init__(self, app):
@@ -33,6 +34,8 @@ class	Settings:
 			self.app.root.ids['resolution'].active = True
 		if SETTINGS["limit"]:
 			self.app.root.ids['limit'].active = True
+		if SETTINGS["update"]:
+			self.app.root.ids['update'].active = True
 		self.app.root.ids['download_folder'].text = SETTINGS['download'].split('/')[-1]
 		self.app.root.ids['screen_manager'].current = 'settings'
 		self.app.root.ids['nav_drawer'].set_state("close")
@@ -72,6 +75,14 @@ class	Settings:
 		dump()
 
 
+	def set_update(self):
+		if self.app.root.ids['update'].active:
+			SETTINGS["update"] = 1
+		else:
+			SETTINGS["update"] = 0
+		dump()
+
+
 	def file_manager_open(self):
 		self.file_manager.show(SETTINGS['download'])
 		self.manager_open = True
@@ -89,6 +100,8 @@ class	Settings:
 
 
 	def reset(self):
+		if self.app.updating:
+			return
 		if self.dialog == None:
 			self.dialog = MDDialog(
 				title="Reset settings?",
@@ -127,8 +140,7 @@ class	Settings:
 
 	def	upgrade(self):
 		try:
-			from pytube import __version__
-			import requests
+			self.app.updating = True
 			self.update_snackbar = Snackbar(
 				text="Up to Date",
 				snackbar_x="10dp",
@@ -145,8 +157,9 @@ class	Settings:
 			new_version = version_code.split()[2].replace("\"", "")
 			if new_version == __version__:
 				self.update_snackbar.open()
+				self.app.updating = False
 				return
-			#print(new_version, __version__, new_version == __version__)
+
 			cipher_url = "https://raw.githubusercontent.com/pytube/pytube/master/pytube/cipher.py"
 			cipher_req = requests.get(cipher_url)
 			cipher_code = cipher_req.content.decode()
@@ -154,7 +167,7 @@ class	Settings:
 				f.write(cipher_code)
 			with open("pytube/version.py", "w") as f:
 				f.write(version_code)
-			#print("updated")
+
 			self.update_snackbar.text = "Restart the app to update"
 			self.update_snackbar.buttons = [
 				MDFlatButton(
@@ -170,10 +183,14 @@ class	Settings:
 			]
 			self.update_snackbar.open()
 		except Exception as error:
-			notify(title='Error', message=str(error), app_icon=ICON_PNG)
-			self.app.root.ids['output_label'].text += '\n\n'+str(error)+'\n\n'
+			self.app.updating = False
+			if PLATFORM == 'android':
+				notify(title='Error', message=str(error), app_icon=ICON_PNG)
+			else:
+				print(error)
 	
 	def	_finish_update(self, *args):
 		self.update_snackbar.dismiss()
+		self.app.updating = False
 		self.app.exit()
 

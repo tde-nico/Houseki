@@ -13,12 +13,12 @@ from kivymd.uix.button import MDFlatButton
 from kivymd.uix.snackbar import Snackbar
 from kivy.core.clipboard import Clipboard
 
-import os, threading, json, time
+import os, threading, json, time, requests
 
 TITLE = "Houseki"
 DEVELOPER = "tde-nico"
 GIT = "https://github.com/tde-nico"
-VERSION = "1.3.0"
+VERSION = "1.3.2"
 ICON = "modules/gem.ico"
 ICON_PNG = "modules/gem.png"
 PLATFORM = kivy.utils.platform
@@ -69,6 +69,7 @@ def reset_settings():
 	SETTINGS['palette'] = 'Purple'
 	SETTINGS['resolution'] = 1
 	SETTINGS['limit'] = 1
+	SETTINGS['update'] = 0
 	SETTINGS['download'] = common_dir + '/Download'
 	dump()
 

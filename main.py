@@ -6,10 +6,10 @@ from modules.unit import Unit_Test
 
 #	TEST LINKS
 
-#   https://www.youtube.com/watch?v=_W88oVKhNW0&ab_channel=Geoxor
-#   https://www.youtube.com/watch?v=FuaQ1QhJOkc&ab_channel=MusicLab
-#   https://www.youtube.com/watch?v=WSeNSzJ2-Jw&list=PL00277C3B32679850&ab_channel=Skrillex
-#   https://www.youtube.com/watch?v=JQ1txLdu6qg&t=1476s&ab_channel=AlexMTCH
+#	https://www.youtube.com/watch?v=_W88oVKhNW0&ab_channel=Geoxor
+#	https://www.youtube.com/watch?v=FuaQ1QhJOkc&ab_channel=MusicLab
+#	https://www.youtube.com/watch?v=WSeNSzJ2-Jw&list=PL00277C3B32679850&ab_channel=Skrillex
+#	https://www.youtube.com/watch?v=JQ1txLdu6qg&t=1476s&ab_channel=AlexMTCH
 
 class Touch(MDScreen):
 	#def on_touch_down(self, touch):
@@ -35,7 +35,27 @@ class main_app(MDApp):
 		self.unit_test = Unit_Test(self)
 		self.info = None
 		self.format = None
+		self.updating = False
 		return Touch() #Builder.load_file('main_app.kv')
+
+
+	def	on_start(self):
+		if SETTINGS["update"]:
+			self.settings.upgrade()
+
+
+	'''
+	def on_stop(self):
+		pass
+
+	def on_pause(self):
+		# Here you can save data if needed
+		return True
+
+	def on_resume(self):
+		# Here you can check if any data needs replacing (usually nothing)
+		pass
+	'''
 
 
 	def show_info(self):
