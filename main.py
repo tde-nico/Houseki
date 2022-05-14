@@ -1,0 +1,60 @@
+from modules.settings import *
+from modules.youtube import Youtube_Downloader
+from modules.settings_menu import Settings
+from modules.home import Home
+from modules.unit import Unit_Test
+
+#	TEST LINKS
+
+#   https://www.youtube.com/watch?v=_W88oVKhNW0&ab_channel=Geoxor
+#   https://www.youtube.com/watch?v=FuaQ1QhJOkc&ab_channel=MusicLab
+#   https://www.youtube.com/watch?v=WSeNSzJ2-Jw&list=PL00277C3B32679850&ab_channel=Skrillex
+#   https://www.youtube.com/watch?v=JQ1txLdu6qg&t=1476s&ab_channel=AlexMTCH
+
+class Touch(MDScreen):
+	#def on_touch_down(self, touch):
+	#	print("down")
+	#def on_touch_up(self, touch):
+	#	print("up")
+	def on_touch_move(self, touch):
+		if touch.x - touch.ox > 200:
+			if self.ids['nav_drawer'].status == 'closed':
+				self.ids['nav_drawer'].set_state("open")
+		if touch.y - touch.oy > 1000:
+			exit()
+
+
+class main_app(MDApp):
+	def build(self):
+		self.title = TITLE
+		self.theme_cls.theme_style = SETTINGS["theme"]
+		self.theme_cls.primary_palette = SETTINGS["palette"]
+		self.yd = Youtube_Downloader(self)
+		self.settings = Settings(self)
+		self.home = Home(self)
+		self.unit_test = Unit_Test(self)
+		self.info = None
+		self.format = None
+		return Touch() #Builder.load_file('main_app.kv')
+
+
+	def show_info(self):
+		if not self.info:
+			app_info =	"App: " + TITLE + "\n" + \
+					"Developer: " + DEVELOPER + "\n" + \
+					"Git: " + GIT + "\n" + \
+					"Version: " + VERSION #+ "\n" + \
+			self.info = MDDialog(
+				title='Info',
+				text=app_info,
+				auto_dismiss=True
+				)
+		self.info.open()
+
+
+	def exit(self):
+		self.get_running_app().stop()
+		exit()
+
+
+main_app().run()
