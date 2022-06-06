@@ -39,8 +39,8 @@ class	Home:
 						on_press=self._not_cancel,
 					),
 					MDFlatButton(
-						text="CANCEL",
-						theme_text_color="ok",
+						text="OK",
+						theme_text_color="Custom",
 						text_color=self.app.theme_cls.primary_color,
 						on_press=self._cancel,
 					),

@@ -18,7 +18,7 @@ import os, threading, json, time, requests
 TITLE = "Houseki"
 DEVELOPER = "tde-nico"
 GIT = "https://github.com/tde-nico"
-VERSION = "1.3.2"
+VERSION = "1.3.4"
 ICON = "modules/gem.ico"
 ICON_PNG = "modules/gem.png"
 PLATFORM = kivy.utils.platform

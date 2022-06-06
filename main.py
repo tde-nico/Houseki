@@ -11,6 +11,9 @@ from modules.unit import Unit_Test
 #	https://www.youtube.com/watch?v=WSeNSzJ2-Jw&list=PL00277C3B32679850&ab_channel=Skrillex
 #	https://www.youtube.com/watch?v=JQ1txLdu6qg&t=1476s&ab_channel=AlexMTCH
 
+# some regex error
+# var_regex = re.compile(r"^\$*\w+\W")
+
 class Touch(MDScreen):
 	#def on_touch_down(self, touch):
 	#	print("down")
@@ -42,7 +45,6 @@ class main_app(MDApp):
 	def	on_start(self):
 		if SETTINGS["update"]:
 			self.settings.upgrade()
-
 
 	'''
 	def on_stop(self):
