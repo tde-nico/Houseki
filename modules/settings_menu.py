@@ -139,24 +139,50 @@ class	Settings:
 
 
 	def	upgrade(self):
+		self.uptodate_snackbar = Snackbar(
+			text="Up to Date",
+			snackbar_x="10dp",
+			snackbar_y="10dp",
+			size_hint_x=.5
+		)
+		self.uptodate_snackbar.size_hint_x = (
+			Window.width - (self.uptodate_snackbar.snackbar_x * 2)
+		) / Window.width
+		self.update_snackbar = Snackbar(
+			text="Restart the app to update",
+			snackbar_x="10dp",
+			snackbar_y="10dp",
+			size_hint_x=.5
+		)
+		self.update_snackbar.size_hint_x = (
+			Window.width - (self.update_snackbar.snackbar_x * 2)
+		) / Window.width
+		self.update_snackbar.buttons = [
+			MDFlatButton(
+				text="CLOSE",
+				text_color=(1, 1, 1, 1),
+				on_release=self._finish_update,
+			),
+			MDFlatButton(
+				text="CANCEL",
+				text_color=(1, 1, 1, 1),
+				on_release=self.update_snackbar.dismiss,
+			),
+		]
+
+		self.thread = threading.Thread(target=self.start_upgrade)
+		self.thread.start()
+	
+	def start_upgrade(self):
 		try:
 			self.app.updating = True
-			self.update_snackbar = Snackbar(
-				text="Up to Date",
-				snackbar_x="10dp",
-				snackbar_y="10dp",
-				size_hint_x=.5
-			)
-			self.update_snackbar.size_hint_x = (
-				Window.width - (self.update_snackbar.snackbar_x * 2)
-			) / Window.width
 
 			version_url = "https://raw.githubusercontent.com/pytube/pytube/master/pytube/version.py"
 			version_req = requests.get(version_url)
 			version_code = version_req.content.decode()
 			new_version = version_code.split()[2].replace("\"", "")
 			if new_version == __version__:
-				self.update_snackbar.open()
+				self.open_uptodate_snackbar()
 				self.app.updating = False
 				return
 
@@ -168,20 +194,7 @@ class	Settings:
 			with open("pytube/version.py", "w") as f:
 				f.write(version_code)
 
-			self.update_snackbar.text = "Restart the app to update"
-			self.update_snackbar.buttons = [
-				MDFlatButton(
-					text="CLOSE",
-					text_color=(1, 1, 1, 1),
-					on_release=self._finish_update,
-				),
-				MDFlatButton(
-					text="CANCEL",
-					text_color=(1, 1, 1, 1),
-					on_release=self.update_snackbar.dismiss,
-				),
-			]
-			self.update_snackbar.open()
+			self.open_update_snackbar()
 		except Exception as error:
 			self.app.updating = False
 			if PLATFORM == 'android':
@@ -189,6 +202,14 @@ class	Settings:
 			else:
 				print(error)
 	
+	@mainthread
+	def open_uptodate_snackbar(self):
+		self.uptodate_snackbar.open()
+	
+	@mainthread
+	def open_update_snackbar(self):
+		self.update_snackbar.open()
+
 	def	_finish_update(self, *args):
 		self.update_snackbar.dismiss()
 		self.app.updating = False

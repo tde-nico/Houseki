@@ -1,6 +1,7 @@
 # remove telnetlib
 import kivy
 import kivymd
+from kivy.clock import mainthread
 from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivy.core.window import Window
@@ -14,6 +15,8 @@ from kivymd.uix.snackbar import Snackbar
 from kivy.core.clipboard import Clipboard
 
 import os, threading, json, time, requests
+
+kivy.require('2.0.0')
 
 TITLE = "Houseki"
 DEVELOPER = "tde-nico"

@@ -39,6 +39,11 @@ class main_app(MDApp):
 		self.info = None
 		self.format = None
 		self.updating = False
+
+		if kivymd.__version__ == '0.104.2':
+			Builder.load_file('main_app_104.kv')
+		else:
+			Builder.load_file('main_app_new.kv')
 		return Touch() #Builder.load_file('main_app.kv')
 
 

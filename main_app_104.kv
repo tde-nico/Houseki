@@ -1,0 +1,311 @@
+<Touch>:
+	MDNavigationLayout:
+		ScreenManager:
+			id: screen_manager
+
+			# HOME
+
+			MDScreen:
+				name: "home"
+				BoxLayout:
+					orientation: "vertical"
+					MDToolbar:
+						title: "Houseki"
+						elevation: 10
+						left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+					GridLayout:
+						cols: 1
+						padding: '5dp'
+						MDTextField:
+							id: url_text
+							hint_text: "url"
+							multiline: True	  
+							color_mode: 'primary'
+							helper_text_mode: "on_focus"
+							helper_text: "Paste here the url"
+						MDBoxLayout:
+							spacing: 10
+							orientation: "horizontal"
+							size_hint_y: None
+							height: self.minimum_height
+							size_hint_x: 1
+							MDBoxLayout:
+								MDDropDownItem:
+									id: drop_item
+									text: 'Select Format'
+									on_release: app.yd.format_selection_menu()
+							MDFillRoundFlatButton:
+								text: "Paste"
+								on_press: app.home.paste()
+							MDFillRoundFlatButton:
+								text: "Clear"
+								on_press: app.home.clear()
+						MDBoxLayout:
+							spacing: 10
+							orientation: "horizontal"
+							size_hint_y: None
+							height: 10 #self.minimum_height
+							size_hint_x: 1
+						MDBoxLayout:
+							spacing: 10
+							orientation: "horizontal"
+							size_hint_y: None
+							height: self.minimum_height
+							size_hint_x: 1
+							MDBoxLayout:
+								size_hint_y: 1
+							MDFillRoundFlatButton:
+								text: "Resume"
+								on_press: app.home.resume()
+							MDFillRoundFlatButton:
+								text: "Stop"
+								on_press: app.home.stop()
+							MDFillRoundFlatButton:
+								text: "Cancel"
+								on_press: app.home.cancel()
+						MDBoxLayout:
+							padding: 10
+							ScrollView:
+								MDLabel:
+									id: output_label
+									text: ''
+									size_hint_y: None
+									height: self.texture_size[1]
+									text_size: self.width, None
+						MDProgressBar:
+							id: playlist_bar
+							value: 0
+							size_hint_y: 0
+							color: 0,0.4,1,1
+						MDProgressBar:
+							id: progress_bar
+							value: 0
+							size_hint_y: 0.1
+							color: 0.4,1,0,1
+						MDRaisedButton:
+							text: 'Download'
+							size_hint_x: 1
+							on_press: app.yd.download()
+
+
+			# UNIT_TEST
+
+			MDScreen:
+				name: "unit_test"
+				BoxLayout:
+					orientation: "vertical"
+					MDToolbar:
+						title: "Unit Test"
+						elevation: 10
+						left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+					GridLayout:
+						cols: 1
+						padding: '20dp'
+						# battery gyroscope spatialorientation speech gravity storagepath
+						MDBoxLayout:
+							spacing: 10
+							orientation: "horizontal"
+							size_hint_y: .1
+							MDLabel:
+								text: "Battery"
+								pos_hint_x: 0.1
+							Label:
+								text: "Charging"
+							Label:
+								id: battery_charging
+								text: ''
+							Label:
+								text: "Percentage"
+							Label:
+								id: battery_percentage
+								text: ''
+						MDBoxLayout:
+							orientation: "horizontal"
+							size_hint_y: .1
+							MDBoxLayout:
+								size_hint_y: .2
+							MDFillRoundFlatButton:
+								text: "Vibration Test"
+								on_press: app.unit_test.do_vibrate()
+							MDBoxLayout:
+								size_hint_y: .2
+							MDFillRoundFlatButton:
+								text: "Notification Test"
+								on_press: app.unit_test.do_notify()
+							MDBoxLayout:
+								size_hint_y: .2
+						MDBoxLayout:
+							size_hint_y: .9
+							padding: 10
+							ScrollView:
+								MDLabel:
+									id: fix_label
+									text: ''
+									size_hint_y: None
+									height: self.texture_size[1]
+									text_size: self.width, None
+						#MDBoxLayout:
+						#	size_hint_y: .9
+
+
+			# SETTINGS
+
+			MDScreen:
+				name: "settings"
+				BoxLayout:
+					orientation: "vertical"
+					MDToolbar:
+						title: "Settings"
+						elevation: 10
+						left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+					GridLayout:
+						cols: 1
+						padding: '20dp'
+						MDBoxLayout:
+							padding: '10dp'
+							orientation: "horizontal"
+							size_hint_y: .1
+							MDLabel:
+								text: "Dark mode"
+								pos_hint: {'x':0.1, 'y':0}
+							MDSwitch:
+								id: theme
+								pos_hint: {'x':0.9, 'y':0}
+								on_active: app.settings.change_theme()
+						MDBoxLayout:
+							padding: '10dp'
+							orientation: "horizontal"
+							size_hint_y: .1
+							MDLabel:
+								text: "Palette"
+								pos_hint: {'x':0.1, 'y':0}
+							MDDropDownItem:
+								id: palette
+								pos_hint: {'x':0.9, 'y':0.2}
+								text: ''
+								on_release: app.settings.palette_menu.open()
+						MDBoxLayout:
+							padding: '10dp'
+							orientation: "horizontal"
+							size_hint_y: .1
+							MDLabel:
+								text: "Default resolution"
+								pos_hint: {'x':0.1, 'y':0}
+							MDSwitch:
+								id: resolution
+								pos_hint: {'x':0.9, 'y':0}
+								on_active: app.settings.set_default_resolution()
+						MDBoxLayout:
+							padding: '10dp'
+							orientation: "horizontal"
+							size_hint_y: .1
+							MDLabel:
+								text: "Extension Limit"
+								pos_hint: {'x':0.1, 'y':0}
+							MDSwitch:
+								id: limit
+								pos_hint: {'x':0.9, 'y':0}
+								on_active: app.settings.set_limit()
+						MDBoxLayout:
+							padding: '10dp'
+							orientation: "horizontal"
+							size_hint_y: .1
+							MDLabel:
+								text: "Download Folder"
+								pos_hint: {'x':0.1, 'y':0}
+							MDDropDownItem:
+								id: download_folder
+								pos_hint: {'x':0.9, 'y':0.2}
+								text: ''
+								on_release: app.settings.file_manager_open()
+						MDBoxLayout:
+							padding: '10dp'
+							orientation: "horizontal"
+							size_hint_y: .1
+							MDLabel:
+								text: "Auto Update"
+								pos_hint: {'x':0.1, 'y':0}
+							MDSwitch:
+								id: update
+								pos_hint: {'x':0.9, 'y':0}
+								on_active: app.settings.set_update()
+						MDBoxLayout:
+							orientation: "horizontal"
+							size_hint_y: .1
+							MDBoxLayout:
+								size_hint_y: .4
+							MDFillRoundFlatButton:
+								text: "Search for Updates"
+								on_press: app.settings.upgrade()
+							MDBoxLayout:
+								size_hint_y: .4
+						MDBoxLayout:
+							size_hint_y: .5
+						MDBoxLayout:
+							orientation: "horizontal"
+							size_hint_y: .1
+							MDBoxLayout:
+								size_hint_y: .4
+							MDFillRoundFlatButton:
+								text: "Reset Default Settings"
+								on_press: app.settings.reset()
+							MDBoxLayout:
+								size_hint_y: .4
+
+		# NAV DRAWER
+
+		MDNavigationDrawer:
+			id: nav_drawer
+			radius: (0, 16, 16, 0) if self.anchor == "left" else (16, 0, 0, 16)
+			BoxLayout:
+				orientation: "vertical"
+				padding: "8dp"
+				spacing: "8dp"
+				AnchorLayout:
+					anchor_x: "left"
+					size_hint_y: None
+					height: avatar.height
+					Image:
+						id: avatar
+						size_hint: None, None
+						size: "56dp", "56dp"
+						source: "data/logo/kivy-icon-256.png"
+				MDLabel:
+					text: "Houseki"
+					font_style: "Button"
+					size_hint_y: None
+					height: self.texture_size[1]
+				MDLabel:
+					text: "test@gmail.com"
+					font_style: "Caption"
+					size_hint_y: None
+					height: self.texture_size[1]
+				ScrollView:
+					MDList:
+						OneLineAvatarListItem:
+							text: "Home"
+							on_press: app.home.home()
+							IconLeftWidget:
+								icon: "home"
+						OneLineAvatarListItem:
+							text: "Unit Test"
+							on_press: app.unit_test.unit_test()
+							IconLeftWidget:
+								icon: "apps"
+						OneLineAvatarListItem:
+							text: "Settings"
+							on_press: app.settings.settings()
+							IconLeftWidget:
+								icon: "cog"
+						OneLineAvatarListItem:
+							text: "Info"
+							on_press: app.show_info()
+							IconLeftWidget:
+								icon: "information-outline"
+						OneLineAvatarListItem:
+							text: "Exit"
+							on_press: app.exit()
+							IconLeftWidget:
+								icon: "exit-to-app"
+
+

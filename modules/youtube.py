@@ -71,6 +71,7 @@ class	Youtube_Downloader:
 		self.is_downloading = True
 		self.is_cancelled = self.is_paused = False
 		try:
+			self.app.root.ids['output_label'].text += 'Searching Conetnt\n'
 			playlist = Playlist(link)
 			videos = playlist.videos
 			lenght = len(videos)
