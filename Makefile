@@ -1,13 +1,12 @@
+all: clean build
+
 build:
 	buildozer -v android debug
 
 clean:
-	rm -rf ./bin/
-	mkdir ./bin/
 	rm -rf ./Download/
 	rm -rf ./modules/__pycache__/
 
-all: clean build
 
 host: 
 	buildozer serve
