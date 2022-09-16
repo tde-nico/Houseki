@@ -1,5 +1,17 @@
 # Houseki
 
+<!--
+#groups
+
+#languages
+Python
+
+#frames and libs
+Kivy
+KivyMD
+
+-->
+
 ## A Python youtube downloader
 
 This is a sperimantal youtube downloader made with kivymd and a little customization of pytube,
