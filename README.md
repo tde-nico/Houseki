@@ -2,6 +2,7 @@
 
 <!--
 #groups
+Apps
 
 #languages
 Python
